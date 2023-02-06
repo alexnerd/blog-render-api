@@ -20,6 +20,9 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 public class RenderException  extends WebApplicationException {
+    public RenderException(String message, Throwable cause) {
+        super(Response.status(400).header("message", message).header("cause", cause.getMessage()).build());
+    }
     public RenderException (int status, String message) {
         super(Response.status(status).header("message", message).build());
     }

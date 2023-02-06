@@ -16,7 +16,7 @@
 
 package alexnerd.render.posts.control;
 
-public class ContentTemplate {
+public class RenderTemplate {
     public static final String ARTICLE_TEASER = """
             <div class="blog-post">
               <h2 class="post-header">

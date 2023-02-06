@@ -16,9 +16,9 @@
 
 package alexnerd.render.checks;
 
+import alexnerd.render.posts.control.ContentResourceClient;
 import alexnerd.render.posts.control.ContentType;
 import alexnerd.render.posts.control.Lang;
-import alexnerd.render.posts.control.PostsResourceClient;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
@@ -30,7 +30,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 public class LivenessCheck {
     @Inject
     @RestClient
-    PostsResourceClient client;
+    private ContentResourceClient client;
 
     private final static String INITIAL_TITLE = "JavaNerd blog";
 
@@ -44,7 +44,7 @@ public class LivenessCheck {
                 .build();
     }
 
-    boolean checkContentAvailability() {
+    private boolean checkContentAvailability() {
         try {
             Response response = this.client.findPost(Lang.ru, ContentType.POST, INITIAL_DATE, INITIAL_TITLE);
             return response.getStatus() == 200;

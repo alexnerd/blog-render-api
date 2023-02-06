@@ -33,14 +33,14 @@ public class Render {
 
     @Inject
     @RestClient
-    PostsResourceClient client;
+    private ContentResourceClient client;
 
     @Inject
     @RegistryType(type = MetricRegistry.Type.APPLICATION)
-    MetricRegistry registry;
+    private MetricRegistry registry;
 
     @Inject
-    CompilerJS compilerJS;
+    private CompilerJS compilerJS;
 
     public String renderPost(Lang lang, ContentType type, String date, String title) {
         Response response;
@@ -79,7 +79,7 @@ public class Render {
                 .collect(Collectors.joining());
     }
 
-    public AbstractMap.SimpleEntry<String, String> readJson(JsonValue value) {
+    private AbstractMap.SimpleEntry<String, String> readJson(JsonValue value) {
         String type = value.asJsonObject().getString("type");
         String content = value.toString();
         return new AbstractMap.SimpleEntry<>(type, content);
@@ -87,10 +87,10 @@ public class Render {
 
     private String render(AbstractMap.SimpleEntry<String, String> entry) {
         String template = switch (ContentType.valueOf(entry.getKey())) {
-            case POST, ARTICLE -> ContentTemplate.POST;
-            case ARTICLE_TEASER -> ContentTemplate.ARTICLE_TEASER;
-            case LAST_ARTICLES -> ContentTemplate.LAST_ARTICLES;
-            default -> throw new IllegalStateException("Unsupported type");
+            case POST, ARTICLE -> RenderTemplate.POST;
+            case ARTICLE_TEASER -> RenderTemplate.ARTICLE_TEASER;
+            case LAST_ARTICLES -> RenderTemplate.LAST_ARTICLES;
+            default -> throw new RenderException(422, "Unsupported content type");
         };
         return this.compilerJS.compile(template, entry.getValue());
     }

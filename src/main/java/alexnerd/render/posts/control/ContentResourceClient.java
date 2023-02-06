@@ -24,9 +24,9 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @RegisterRestClient(configKey = "content")
 @Path("/")
-public interface PostsResourceClient {
+public interface ContentResourceClient {
     @GET
-    @Retry(maxRetries = 3)
+    @Retry(maxRetries = 3, delay= 2000)
     @Path("post/{date}/{title}")
     @Produces(MediaType.APPLICATION_JSON)
     Response findPost(@DefaultValue("ru") @QueryParam("lang") Lang lang,
@@ -35,7 +35,7 @@ public interface PostsResourceClient {
                       @PathParam("title") String title);
 
     @GET
-    @Retry(maxRetries = 3)
+    @Retry(maxRetries = 3, delay= 2000)
     @Path("last")
     @Produces(MediaType.APPLICATION_JSON)
     Response findLast(@QueryParam("lang") Lang lang,

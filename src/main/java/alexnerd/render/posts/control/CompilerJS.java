@@ -34,9 +34,9 @@ public class CompilerJS {
 
     @Inject
     @RegistryType(type = MetricRegistry.Type.APPLICATION)
-    MetricRegistry registry;
+    private MetricRegistry registry;
 
-    Source handleBars;
+    private Source handleBars;
 
     @PostConstruct
     public void init() {
@@ -56,19 +56,22 @@ public class CompilerJS {
             bindings.putMember("postContent", postContent);
             return context.eval("js", this.getCompileLogic()).asString();
         } catch (PolyglotException ex) {
-            throw new IllegalStateException("Compiling error: " + ex.getMessage(), ex);
+            throw new RenderException("Compiling error: " + ex.getMessage(), ex);
         }
     }
 
-    String getCompileLogic() {
+    private String getCompileLogic() {
         return """
                 const postAsJSON = JSON.parse(postContent);
                 const compiledTemplate = Handlebars.compile(templateContent);
                 compiledTemplate(postAsJSON);
                 """;
     }
-    Reader loadHandlebars() {
-        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("handlebars-v4.7.7.js");
-        return new InputStreamReader(stream);
+
+    private Reader loadHandlebars() throws IOException {
+        try (InputStream stream = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("handlebars-v4.7.7.js")) {
+            return new InputStreamReader(stream);
+        }
     }
 }

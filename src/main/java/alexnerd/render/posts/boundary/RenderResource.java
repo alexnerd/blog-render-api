@@ -18,7 +18,6 @@ package alexnerd.render.posts.boundary;
 
 import alexnerd.render.posts.control.ContentType;
 import alexnerd.render.posts.control.Lang;
-import alexnerd.render.posts.control.RenderException;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -26,13 +25,12 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
-import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.metrics.annotation.ConcurrentGauge;
 
 @Path("/")
-public class PostsResource {
+public class RenderResource {
     @Inject
-    Render render;
+    private Render render;
 
     @GET
     @Bulkhead(5)
@@ -58,5 +56,4 @@ public class PostsResource {
         String content = this.render.renderLast(lang, type, limit);
         return Response.ok(content).build();
     }
-
 }
