@@ -47,11 +47,8 @@ public class ContentResource {
             JsonValue json = response.readEntity(JsonValue.class);
             return Content.fromJsonValue(json);
 
-        } catch (WebApplicationException ex) {
-            try (Response response = ex.getResponse()) {
-                registry.counter("get_content_status_" + response.getStatus()).inc();
-                throw new IntegrationException(response.getStatus(), response.getHeaderString("message"));
-            }
+        } catch (RuntimeException ex) {
+            throw new IntegrationException(ex.getMessage());
         }
     }
 
@@ -63,11 +60,8 @@ public class ContentResource {
             JsonArray jsonArray = response.readEntity(JsonArray.class);
             return Content.fromJsonArray(jsonArray);
 
-        } catch (WebApplicationException ex) {
-            try (Response response = ex.getResponse()) {
-                registry.counter("get_last_content_status_" + response.getStatus()).inc();
-                throw new IntegrationException(response.getStatus(), response.getHeaderString("message"));
-            }
+        } catch (RuntimeException ex) {
+            throw new IntegrationException(ex.getMessage());
         }
     }
 

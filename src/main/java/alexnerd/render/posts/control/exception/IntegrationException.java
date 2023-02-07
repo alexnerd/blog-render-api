@@ -20,7 +20,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 public class IntegrationException extends WebApplicationException {
-    public IntegrationException (int integrationStatus, String message) {
-        super(Response.status(502).header("integration_status", integrationStatus).header("message", message).build());
+    public IntegrationException (String message) {
+        super(Response.status(500).header("message", message).build());
     }
 }
