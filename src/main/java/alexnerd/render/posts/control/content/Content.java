@@ -14,17 +14,25 @@
  *  limitations under the License.
  */
 
-package alexnerd.render.posts.control;
+package alexnerd.render.posts.control.content;
 
-public enum ContentType {
-    ARTICLE("articles"),
-    ARTICLE_TEASER("posts"),
-    LAST_ARTICLES("articles"),
-    POST("posts");
+import jakarta.json.JsonArray;
+import jakarta.json.JsonValue;
 
-    private final String baseDir;
-    ContentType(String baseDir){
-        this.baseDir = baseDir;
+import java.util.List;
+
+public record Content(ContentType type, String content) {
+
+    public static Content fromJsonValue(JsonValue value) {
+        String type = value.asJsonObject().getString("type");
+        String content = value.toString();
+        return new Content(ContentType.valueOf(type), content);
     }
-    public String getBaseDir(){ return baseDir;}
+
+    public static List<Content> fromJsonArray(JsonArray array) {
+        return array.stream()
+                .parallel()
+                .map(Content::fromJsonValue)
+                .toList();
+    }
 }

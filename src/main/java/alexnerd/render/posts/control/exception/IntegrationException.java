@@ -14,16 +14,13 @@
  *  limitations under the License.
  */
 
-package alexnerd.render.posts.control;
+package alexnerd.render.posts.control.exception;
 
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
-public class RenderException  extends WebApplicationException {
-    public RenderException(String message, Throwable cause) {
-        super(Response.status(400).header("message", message).header("cause", cause.getMessage()).build());
-    }
-    public RenderException (int status, String message) {
-        super(Response.status(status).header("message", message).build());
+public class IntegrationException extends WebApplicationException {
+    public IntegrationException (int integrationStatus, String message) {
+        super(Response.status(502).header("integration_status", integrationStatus).header("message", message).build());
     }
 }

@@ -16,6 +16,7 @@
 
 package alexnerd.render.posts.control;
 
+import alexnerd.render.posts.control.exception.RenderException;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.metrics.MetricRegistry;
@@ -40,9 +41,9 @@ public class CompilerJS {
 
     @PostConstruct
     public void init() {
-        try {
-            this.handleBars = Source.newBuilder("js", this.loadHandlebars(), "Handlebars").build();
-        } catch (IOException ex) {
+        try (Reader handlebarsReader = this.loadHandlebars()) {
+            this.handleBars = Source.newBuilder("js", handlebarsReader, "Handlebars").build();
+        } catch (Exception ex) {
             this.registry.counter("compile_js_errors").inc();
             throw new IllegalStateException("Cannot load Handlebars", ex);
         }

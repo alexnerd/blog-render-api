@@ -14,8 +14,9 @@
  *  limitations under the License.
  */
 
-package alexnerd.render.posts.control;
+package alexnerd.render.posts.control.content;
 
+import alexnerd.render.posts.control.Lang;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -29,7 +30,7 @@ public interface ContentResourceClient {
     @Retry(maxRetries = 3, delay= 2000)
     @Path("post/{date}/{title}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response findPost(@DefaultValue("ru") @QueryParam("lang") Lang lang,
+    Response getContent(@DefaultValue("ru") @QueryParam("lang") Lang lang,
                       @DefaultValue("POST") @QueryParam("type") ContentType type,
                       @PathParam("date") String date,
                       @PathParam("title") String title);
@@ -38,7 +39,7 @@ public interface ContentResourceClient {
     @Retry(maxRetries = 3, delay= 2000)
     @Path("last")
     @Produces(MediaType.APPLICATION_JSON)
-    Response findLast(@QueryParam("lang") Lang lang,
+    Response getLast(@QueryParam("lang") Lang lang,
                       @QueryParam("type") ContentType type,
                       @QueryParam("limit") int limit);
 

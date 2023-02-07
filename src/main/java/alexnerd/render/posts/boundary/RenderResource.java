@@ -16,7 +16,7 @@
 
 package alexnerd.render.posts.boundary;
 
-import alexnerd.render.posts.control.ContentType;
+import alexnerd.render.posts.control.content.ContentType;
 import alexnerd.render.posts.control.Lang;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.Max;
@@ -37,11 +37,11 @@ public class RenderResource {
     @ConcurrentGauge
     @Path("post/{date}/{title}")
     @Produces(MediaType.TEXT_HTML)
-    public Response findPost(@DefaultValue("ru") @QueryParam("lang") Lang lang,
+    public Response findContent(@DefaultValue("ru") @QueryParam("lang") Lang lang,
                              @DefaultValue("POST") @QueryParam("type") ContentType type,
                              @PathParam("date") String date,
                              @PathParam("title") String title)  {
-        String content = this.render.renderPost(lang, type, date, title);
+        String content = this.render.renderContent(lang, type, date, title);
         return Response.ok(content).build();
     }
 

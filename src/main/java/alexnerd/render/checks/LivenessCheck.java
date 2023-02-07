@@ -16,8 +16,8 @@
 
 package alexnerd.render.checks;
 
-import alexnerd.render.posts.control.ContentResourceClient;
-import alexnerd.render.posts.control.ContentType;
+import alexnerd.render.posts.control.content.ContentResourceClient;
+import alexnerd.render.posts.control.content.ContentType;
 import alexnerd.render.posts.control.Lang;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
@@ -45,8 +45,7 @@ public class LivenessCheck {
     }
 
     private boolean checkContentAvailability() {
-        try {
-            Response response = this.client.findPost(Lang.ru, ContentType.POST, INITIAL_DATE, INITIAL_TITLE);
+        try (Response response = this.client.getContent(Lang.ru, ContentType.POST, INITIAL_DATE, INITIAL_TITLE)){
             return response.getStatus() == 200;
         } catch (Exception ex) {
             return false;
