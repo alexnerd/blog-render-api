@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2023 Aleksey Popov <alexnerd.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,6 +56,6 @@ public class Render {
             case LAST_ARTICLES -> RenderTemplate.LAST_ARTICLES;
             default -> throw new RenderException(422, "Unsupported content type");
         };
-        return this.compilerJS.compile(template, content.content());
+        return compilerJS.compile(template, content.content());
     }
 }

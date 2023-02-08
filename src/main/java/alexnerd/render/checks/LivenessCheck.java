@@ -45,7 +45,7 @@ public class LivenessCheck {
     }
 
     private boolean checkContentAvailability() {
-        try (Response response = this.client.getContent(Lang.ru, ContentType.POST, INITIAL_DATE, INITIAL_TITLE)){
+        try (Response response = client.getContent(Lang.ru, ContentType.POST, INITIAL_DATE, INITIAL_TITLE)){
             return response.getStatus() == 200;
         } catch (Exception ex) {
             return false;

@@ -41,7 +41,7 @@ public class RenderResource {
                              @DefaultValue("POST") @QueryParam("type") ContentType type,
                              @PathParam("date") String date,
                              @PathParam("title") String title)  {
-        String content = this.render.renderContent(lang, type, date, title);
+        String content = render.renderContent(lang, type, date, title);
         return Response.ok(content).build();
     }
 
@@ -53,7 +53,7 @@ public class RenderResource {
     public Response findLast(@DefaultValue("ru") @QueryParam("lang") Lang lang,
                              @DefaultValue("POST") @QueryParam("type") ContentType type,
                              @QueryParam("limit") @Min(1) @Max(10) int limit) {
-        String content = this.render.renderLast(lang, type, limit);
+        String content = render.renderLast(lang, type, limit);
         return Response.ok(content).build();
     }
 }

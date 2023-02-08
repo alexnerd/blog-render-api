@@ -21,7 +21,6 @@ import alexnerd.render.posts.control.exception.IntegrationException;
 import jakarta.inject.Inject;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonValue;
-import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.annotation.RegistryType;
@@ -40,7 +39,7 @@ public class ContentResource {
     private MetricRegistry registry;
 
     public Content getContent(Lang lang, ContentType type, String date, String title) {
-        try (Response response = this.client.getContent(lang, type, date, title)) {
+        try (Response response = client.getContent(lang, type, date, title)) {
             int status = response.getStatus();
             registry.counter("get_content_status_" + status).inc();
 
@@ -53,7 +52,7 @@ public class ContentResource {
     }
 
     public List<Content> getLast(Lang lang, ContentType type, int limit) {
-        try (Response response = this.client.getLast(lang, type, limit)) {
+        try (Response response = client.getLast(lang, type, limit)) {
             int status = response.getStatus();
             registry.counter("get_last_content_status_" + status).inc();
 

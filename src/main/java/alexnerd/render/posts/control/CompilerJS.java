@@ -42,9 +42,9 @@ public class CompilerJS {
     @PostConstruct
     public void init() {
         try (Reader handlebarsReader = this.loadHandlebars()) {
-            this.handleBars = Source.newBuilder("js", handlebarsReader, "Handlebars").build();
+            handleBars = Source.newBuilder("js", handlebarsReader, "Handlebars").build();
         } catch (Exception ex) {
-            this.registry.counter("compile_js_errors").inc();
+            registry.counter("compile_js_errors").inc();
             throw new IllegalStateException("Cannot load Handlebars", ex);
         }
     }
@@ -52,7 +52,7 @@ public class CompilerJS {
     public String compile (String templateContent, String postContent) {
         try (Context context = Context.create("js")) {
             Value bindings = context.getBindings("js");
-            context.eval(this.handleBars);
+            context.eval(handleBars);
             bindings.putMember("templateContent", templateContent);
             bindings.putMember("postContent", postContent);
             return context.eval("js", this.getCompileLogic()).asString();
